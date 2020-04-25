@@ -1,0 +1,27 @@
+@font-face {
+    font-family: PtSerif;
+    src: local('./font/PtSerif/PTSerif-Bold.ttf');
+  }
+
+.card_styling {
+    font-family: PtSerif;
+    font-size: 25px;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    height:20rem;
+    cursor: pointer;
+}
+.card_styling:hover{
+    background-color: black;
+    opacity: 0.9;
+    color:white;
+}
+
+.centercontent_child {
+    text-align:center;
+}
+
+.row_ht {
+    height:22rem;
+}
