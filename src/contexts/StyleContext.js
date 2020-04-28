@@ -12,18 +12,17 @@ const StyleContextProvider = (props) =>{
         filter:'blur(0px)'
     }
 
-    const [blur,setBlur] = useState([
+    const [blur,setBlur] = useState(
         {blurState:false,
         blurEffect:blurOff}
-    ])
+    )
 
     const toggleBlur =()=>{
         if (blur.blurState){
-            setBlur({blurState:true,blurEffect:blurOn});
+            setBlur({blurState:true,blurEffect:blurOff});
         }else {
-            setBlur({blurState:false,blurEffect:blurOff});   
+            setBlur({blurState:false,blurEffect:blurOn});   
         }
-
     }
 
     return (

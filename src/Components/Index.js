@@ -1,9 +1,21 @@
-import React from 'react';
+import React,{useContext} from 'react';
+import Header from './Header';
+import Footer from './Footer';
+import Home from './Home';
+import Sales from './Sales';
+import SManagement from './SManagement';
+import SReport from './SReport';
+import Inventory from './Inventory';
+import {StyleContext} from '../contexts/StyleContext'
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 
 
 const Index = () => {
+
+    const {blur} = useContext(StyleContext);
+
     return (    
-    <div className="container" >
+    <div className="container" style={blur.blurEffect}>
         <Header/>
         <Router>
             <Switch>
