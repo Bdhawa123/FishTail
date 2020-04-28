@@ -37,17 +37,41 @@ src: local('./font/Qanelas/QanelasSoft-ExtraBold.otf');
 }
 
 .centerRow{
+    display: flex;
     justify-content: center;
 }
 
 .row{
     padding: 0.5em;
 }
-
+/* Table Component*/
 .dataComponent {
     padding-top:3em;
     justify-content: center;
 }
+/* Modal Part*/
+.modalPart {
+    display: flex;
+
+}
+
+.modalClose {
+    width:2.5rem;
+    margin-left: auto;
+}
+
+.modal-header::before {
+    margin: auto;
+    content:'D';
+    display: flex;
+    visibility: hidden;
+    margin-right:1px;
+}
+
+.modal-header{
+    justify-content: center;
+}
+
 
 @media only screen and (max-width: 600px) {
     .topRow h1{
