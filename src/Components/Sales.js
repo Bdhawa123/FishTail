@@ -62,8 +62,8 @@ const SalesComponent = (props)=>{
                     </ModalBody>
 
                     <ModalFooter>
-                    <Button color="primary" onClick={()=>{closeModal()}}>Do Something</Button>
-                    <Button color="secondary" onClick={()=>{closeModal()}}>Cancel</Button>
+                    <Button color="primary" onClick={()=>{closeModal()}}>Confirm</Button>
+                    <Button color="danger" onClick={()=>{closeModal()}}>Cancel</Button>
                     </ModalFooter>
             
             </Modal>
