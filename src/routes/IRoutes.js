@@ -5,6 +5,13 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(IController.createInventory);
+  .get(IController.getAllItems)
+  .post(IController.createInventory);
+
+router
+  .route('/:id')
+  .get(IController.getItem)
+  .patch(IController.updateItem)
+  .delete(IController.deleteItem);
 
 module.exports = router;
