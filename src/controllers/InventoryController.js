@@ -4,6 +4,7 @@ const AppError = require('../utils/appError');
 
 
 exports.createInventory = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const Item = await Inventory.create(req.body);
   res.status(201).json({
     status: 'success',

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {
-  Table, Button, Modal, ModalHeader,
+  Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col,
 } from 'reactstrap';
 import { DataContext } from '../contexts/DataContext';
 import { StyleContext } from '../contexts/StyleContext';
@@ -11,8 +11,9 @@ const DataComponent = ({ data }) => {
   const [inventoryItem, fillitem] = useState([]);
   const { blur, toggleBlur } = useContext(StyleContext);
 
+  // Need to rename thiss
   useEffect(() => {
-    console.log(inventoryItem);
+    // console.log(inventoryItem);
   });
 
   const openModal = (ID) => {
@@ -30,8 +31,7 @@ const DataComponent = ({ data }) => {
         //this item is getting loaded
         console.log(result.Item[0]);
         fillitem(result.Item[0]);
-      })
-      .then(console.log(`Inventory Item${inventoryItem}`)); //this isn't getting loaded
+      });
   };
 
   const closeModal = () => {
@@ -49,26 +49,75 @@ const DataComponent = ({ data }) => {
   };
 
 
-  const Confirm = () => {
-    console.log('Confirm Tag');
-    return (
-      <Modal isOpen={modal}>
-        <ModalHeader toggle={() => { closeModal(); }}>Edit Item</ModalHeader>
-        Edit modal need to build
-      </Modal>
-    );
-  };
+  const OpenItem = () => (
+    <Modal isOpen={modal}>
+      <ModalHeader toggle={() => { closeModal(); }}>Edit Item</ModalHeader>
+      <ModalBody className="centerRow">
+        <div>
+          <Row className="center-vertical">
+            <Col xs="4">
+              Product Id:
+            </Col>
+            <Col xs="6">
+              <input type="text" placeholder={inventoryItem.ProductID} disabled />
+            </Col>
+          </Row>
+          <Row className="center-vertical">
+            <Col xs="4">
+              Item Name
+            </Col>
+            <Col xs="6">
+              <input type="text" placeholder={inventoryItem.ProductName} />
+            </Col>
+          </Row>
 
-  const OpenProduct = () => {
-    console.log('Open Product');
-    return (
-      <Modal isOpen={confirmModal}>
-        <ModalHeader toggle={() => { closeConfirmModal(); }}>Confirm Action</ModalHeader>
-        Are you sure ?
-      </Modal>
-    );
-  };
+          <Row className="center-vertical">
+            <Col xs="4">
+              Cost Price
+            </Col>
+            <Col xs="6">
+              <input type="text" placeholder={inventoryItem.CostPrice} />
+            </Col>
+          </Row>
 
+          <Row className="center-vertical">
+            <Col xs="4">
+              Selling Price
+            </Col>
+            <Col xs="6">
+              <input type="text" placeholder={inventoryItem.SellingPrice} />
+            </Col>
+          </Row>
+
+          <Row className="center-vertical">
+            <Col xs="4">
+              Quantity
+            </Col>
+            <Col xs="6">
+              <input type="text" placeholder={inventoryItem.Quantity} />
+            </Col>
+          </Row>
+        </div>
+      </ModalBody>
+
+      <ModalFooter>
+        <Button color="primary" onClick={() => { closeModal(); }}>Confirm</Button>
+        <Button color="danger" onClick={() => { closeModal(); }}>Cancel</Button>
+      </ModalFooter>
+    </Modal>
+  );
+
+  const Confirm = () => (
+    <Modal isOpen={confirmModal}>
+      <ModalHeader toggle={() => { closeConfirmModal(); }}>Confirm Action</ModalHeader>
+      Are you sure ?
+      <ModalFooter>
+        <Button color="primary" onClick={() => { closeConfirmModal(); }}>Confirm</Button>
+        <Button color="danger" onClick={() => { closeConfirmModal(); }}>Cancel</Button>
+      </ModalFooter>
+    </Modal>
+  );
+  let a = 0;
   return (
     <div>
       <Table>
@@ -84,7 +133,7 @@ const DataComponent = ({ data }) => {
         <tbody>
           {(data != null) ? (Object.values(data)).map((item) => (
             item.map((element) => (
-              <tr>
+              <tr key={element._id}>
                 <td>{element.ProductID}</td>
                 <td>{element.ProductName}</td>
                 <td>{element.CostPrice}</td>
@@ -97,7 +146,7 @@ const DataComponent = ({ data }) => {
         </tbody>
       </Table>
       <Confirm />
-      <OpenProduct />
+      <OpenItem />
     </div>
   );
 };

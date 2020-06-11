@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const iRoutes = require('./routes/IRoutes');
 const AppError = require('./utils/appError');
@@ -9,12 +10,8 @@ const DB = 'mongodb://localhost:27017/sampleDatabase';
 app.use(express.json());
 //cors request middleware
 app.use(cors());
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   next();
-// });
-
+app.options('*', cors());
+app.use(bodyParser.json());
 
 app.use('/api/Inventory', iRoutes);
 
@@ -30,6 +27,8 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
+  console.log(err.status);
+  console.log(err.message);
 
   res.status(err.statusCode).json({
     status: err.status,
