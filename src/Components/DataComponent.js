@@ -1,20 +1,48 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {
-  Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col,
+  Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Form,
 } from 'reactstrap';
 import { DataContext } from '../contexts/DataContext';
 import { StyleContext } from '../contexts/StyleContext';
+import { HandleSubmitContext } from '../contexts/HandleSubmitContext';
+
+let INITIAL_STATE = {
+  ProductID: '',
+  ProductName: '',
+  CostPrice: '',
+  SellingPrice: '',
+  Quantity: '',
+};
 
 const DataComponent = ({ data }) => {
   const [modal, OpenModal] = useState(false);
   const [confirmModal, toggleConfirmModal] = useState(false);
   const [inventoryItem, fillitem] = useState([]);
   const { blur, toggleBlur } = useContext(StyleContext);
+  const {
+    handleChange, setInitialState, val, result, handleEditSubmit,
+  } = useContext(HandleSubmitContext);
+
 
   // Need to rename thiss
+
   useEffect(() => {
-    // console.log(inventoryItem);
-  });
+
+  }, []);
+
+  const setItem = (Obj) => {
+    let JsonObj = {
+      ProductID: Obj.ProductID,
+      ProductName: Obj.ProductName,
+      CostPrice: Obj.CostPrice,
+      SellingPrice: Obj.SellingPrice,
+      Quantity: Obj.Quantity,
+    };
+
+    INITIAL_STATE = JSON.stringify(JsonObj);
+    console.log(INITIAL_STATE);
+  };
+
 
   const openModal = (ID) => {
     toggleBlur();
@@ -27,12 +55,14 @@ const DataComponent = ({ data }) => {
       },
     })
       .then((res) => res.json())
-      .then((result) => {
+      .then((response) => {
         //this item is getting loaded
-        console.log(result.Item[0]);
-        fillitem(result.Item[0]);
+        console.log(response.Item[0]);
+        fillitem(response.Item[0]);
+        setItem(response.Item[0]);
       });
   };
+
 
   const closeModal = () => {
     toggleBlur();
@@ -42,7 +72,9 @@ const DataComponent = ({ data }) => {
   const openConfirmModal = () => {
     toggleBlur();
     toggleConfirmModal(true);
+    console.log('Open Confirm Modal is loaded');
   };
+
   const closeConfirmModal = () => {
     toggleBlur();
     toggleConfirmModal(false);
@@ -52,56 +84,58 @@ const DataComponent = ({ data }) => {
   const OpenItem = () => (
     <Modal isOpen={modal}>
       <ModalHeader toggle={() => { closeModal(); }}>Edit Item</ModalHeader>
-      <ModalBody className="centerRow">
-        <div>
-          <Row className="center-vertical">
-            <Col xs="4">
-              Product Id:
-            </Col>
-            <Col xs="6">
-              <input type="text" placeholder={inventoryItem.ProductID} disabled />
-            </Col>
-          </Row>
-          <Row className="center-vertical">
-            <Col xs="4">
-              Item Name
-            </Col>
-            <Col xs="6">
-              <input type="text" placeholder={inventoryItem.ProductName} />
-            </Col>
-          </Row>
+      <Form onSubmit={handleEditSubmit}>
+        <ModalBody className="centerRow">
+          <div>
+            <Row className="center-vertical">
+              <Col xs="4">
+                Product Id:
+              </Col>
+              <Col xs="6">
+                <input type="text" placeholder={inventoryItem.ProductID} disabled />
+              </Col>
+            </Row>
+            <Row className="center-vertical">
+              <Col xs="4">
+                Item Name
+              </Col>
+              <Col xs="6">
+                <input type="text" placeholder={inventoryItem.ProductName} name="ProductName" onChange={handleChange} value={val.ProductName} />
+              </Col>
+            </Row>
 
-          <Row className="center-vertical">
-            <Col xs="4">
-              Cost Price
-            </Col>
-            <Col xs="6">
-              <input type="text" placeholder={inventoryItem.CostPrice} />
-            </Col>
-          </Row>
+            <Row className="center-vertical">
+              <Col xs="4">
+                Cost Price
+              </Col>
+              <Col xs="6">
+                <input type="text" placeholder={inventoryItem.CostPrice} name="CostPrice" onChange={handleChange} />
+              </Col>
+            </Row>
 
-          <Row className="center-vertical">
-            <Col xs="4">
-              Selling Price
-            </Col>
-            <Col xs="6">
-              <input type="text" placeholder={inventoryItem.SellingPrice} />
-            </Col>
-          </Row>
+            <Row className="center-vertical">
+              <Col xs="4">
+                Selling Price
+              </Col>
+              <Col xs="6">
+                <input type="text" placeholder={inventoryItem.SellingPrice} name="SellingPrice" onChange={handleChange} />
+              </Col>
+            </Row>
 
-          <Row className="center-vertical">
-            <Col xs="4">
-              Quantity
-            </Col>
-            <Col xs="6">
-              <input type="text" placeholder={inventoryItem.Quantity} />
-            </Col>
-          </Row>
-        </div>
-      </ModalBody>
+            <Row className="center-vertical">
+              <Col xs="4">
+                Quantity
+              </Col>
+              <Col xs="6">
+                <input type="text" placeholder={inventoryItem.Quantity} name="Quantity" onChange={handleChange} />
+              </Col>
+            </Row>
+          </div>
+        </ModalBody>
+      </Form>
 
       <ModalFooter>
-        <Button color="primary" onClick={() => { closeModal(); }}>Confirm</Button>
+        <Button color="primary" onClick={openConfirmModal}>Confirm</Button>
         <Button color="danger" onClick={() => { closeModal(); }}>Cancel</Button>
       </ModalFooter>
     </Modal>
@@ -112,12 +146,12 @@ const DataComponent = ({ data }) => {
       <ModalHeader toggle={() => { closeConfirmModal(); }}>Confirm Action</ModalHeader>
       Are you sure ?
       <ModalFooter>
-        <Button color="primary" onClick={() => { closeConfirmModal(); }}>Confirm</Button>
+        <Button color="primary" onClick={openConfirmModal}>Confirm</Button>
         <Button color="danger" onClick={() => { closeConfirmModal(); }}>Cancel</Button>
       </ModalFooter>
     </Modal>
   );
-  let a = 0;
+
   return (
     <div>
       <Table>
