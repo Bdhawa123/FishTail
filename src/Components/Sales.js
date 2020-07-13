@@ -3,7 +3,6 @@ import {
   Card, Row, Modal, ModalBody, ModalHeader, ModalFooter, Button,
 } from 'reactstrap';
 import '../styles/sales.css';
-import DataComponent from './DataComponent';
 import { StyleContext } from '../contexts/StyleContext';
 import { DataContext } from '../contexts/DataContext';
 
@@ -34,7 +33,7 @@ const SalesComponent = (props) => {
       <Card>
         <div className="topRow">
           <h1>Sales</h1>
-          <button className="btn btn-primary" onClick={() => { props.history.push('/Home'); }}>
+          <button className="btn btn-primary" type="button" onClick={() => { props.history.push('/Home'); }}>
             back
           </button>
         </div>
@@ -42,7 +41,7 @@ const SalesComponent = (props) => {
 
       <Card className="container card2">
         <Row>
-          <button className="btn btn-primary" onClick={() => { openModal(); }}>
+          <button className="btn btn-primary" type="button" onClick={() => { openModal(); }}>
             New
           </button>
         </Row>
@@ -51,7 +50,7 @@ const SalesComponent = (props) => {
           <input type="text" placeholder="Search" />
         </Row>
         <Row className="dataComponent">
-          <DataComponent data={null} />
+          {/* <DataComponent data={null} /> */}
         </Row>
       </Card>
 

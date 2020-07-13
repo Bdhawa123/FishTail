@@ -9,7 +9,7 @@ const HandleSubmitContextProvider = (props) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-  });
+  }, [val]);
 
   const handleChange = (event) => {
     setValues({ ...val, [event.target.name]: event.target.value });
@@ -39,13 +39,41 @@ const HandleSubmitContextProvider = (props) => {
   const handleSubmit = (event, url) => {
     event.preventDefault();
     console.log('value from handlesubmitcontext');
-    submiturl(url);
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(val),
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+
+    })
+      .then((response) => {
+        console.log(response);
+        setresult(response.ok);
+      })
+      .catch((error) => {
+        // setresult(false);
+      });
+  };
+
+  const handleEditSubmit = (event, url) => {
+    event.preventDefault();
+    fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify(val),
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+
+    })
+      .then((response) => {
+        setresult(response.ok);
+      })
+      .catch((error) => {
+        // setresult(false);
+      });
   };
 
 
   return (
     <HandleSubmitContext.Provider value={{
-      handleChange, setInitialState, handleSubmit, val, result,
+      handleChange, setInitialState, handleSubmit, handleEditSubmit, val, result,
     }}
     >
       {props.children}

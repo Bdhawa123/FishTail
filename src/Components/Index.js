@@ -6,7 +6,7 @@ import Home from './Home';
 import Sales from './Sales';
 import SManagement from './SManagement';
 import SReport from './SReport';
-import Inventory from './Inventory';
+import Inventory from './Inventory/Inventory';
 import { StyleContext } from '../contexts/StyleContext';
 
 

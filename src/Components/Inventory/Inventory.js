@@ -1,15 +1,12 @@
-import React, {
-  Component, useContext, useState, useEffect,
-} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Card, Col, Row, Modal, ModalBody, ModalHeader, ModalFooter, Button, Form,
 } from 'reactstrap';
-import '../styles/sales.css';
+import '../../styles/sales.css';
 import DataComponent from './DataComponent';
-import NoticeModal from './NoticeModal';
-import { StyleContext } from '../contexts/StyleContext';
-import { DataContext } from '../contexts/DataContext';
-import { HandleSubmitContext } from '../contexts/HandleSubmitContext';
+import { StyleContext } from '../../contexts/StyleContext';
+import useEditInventory from '../../Forms/InventoryForm';
+import ConfirmModal from '../ConfirmModal';
 
 /**
  * TO DO
@@ -30,21 +27,18 @@ const INITIAL_STATE = {
 
 const Inventory = ({ history }) => {
   const { toggleBlur } = useContext(StyleContext);
-  const { items } = useContext(DataContext);
-  const {
-    handleChange, handleSubmit, setInitialState, val, result,
-  } = useContext(HandleSubmitContext);
-  let noticeMessage = 'Request was unsuccessful';
-
+  const { handleChange, handleSubmitAddItem, val } = useEditInventory(INITIAL_STATE);
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const url = 'http://localhost:3030/api/Inventory';
-
+  const [confirmValue, setConfirmValue] = useState(false);
 
   useEffect(() => {
-    setInitialState(INITIAL_STATE);
-  }, [INITIAL_STATE, confirmModal]);
-
+    if (confirmValue === 'create') {
+      handleSubmitAddItem();
+      setConfirmValue('');
+    }
+    //console.log('Inventory');
+  }, [confirmValue]);
   const openModal = () => {
     toggleBlur();
     OpenModal(true);
@@ -55,16 +49,11 @@ const Inventory = ({ history }) => {
     OpenModal(false);
   };
 
-  const submitProduct = (event) => {
-    closeModal();
+  const Submit = (event) => {
+    event.preventDefault();
     setConfirmModal(true);
-    handleSubmit(event, url);
-    if (result) {
-      noticeMessage = 'Successfully submitted';
-    } else {
-      noticeMessage = 'Request failed';
-    }
   };
+
 
   return (
     <div className="txtImport">
@@ -87,8 +76,9 @@ const Inventory = ({ history }) => {
         <Row className="centerRow">
           <input type="text" placeholder="Search" />
         </Row>
+        {/* DataComponent --- mongodb data */}
         <Row className="dataComponent">
-          <DataComponent data={items} />
+          <DataComponent />
         </Row>
       </Card>
 
@@ -99,7 +89,7 @@ const Inventory = ({ history }) => {
 
       <Modal isOpen={modal} className="modalPart modal-lg">
         <ModalHeader toggle={closeModal}>Product Entry</ModalHeader>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <ModalBody className="centerRow">
             <div>
               <Row className="center-vertical">
@@ -107,7 +97,7 @@ const Inventory = ({ history }) => {
                   Product Id:
                 </Col>
                 <Col xs="6">
-                  <input type="text" placeholder={val.ProductId} id="id" name="ProductID" onChange={handleChange} />
+                  <input type="text" placeholder="Prodcut ID" onChange={handleChange} name="ProductID" value={val.ProductID} />
                 </Col>
               </Row>
               <Row className="center-vertical">
@@ -115,7 +105,7 @@ const Inventory = ({ history }) => {
                   Item Name
                 </Col>
                 <Col xs="6">
-                  <input type="text" placeholder={val.ItemName} id="name" name="ProductName" onChange={handleChange} />
+                  <input type="text" placeholder="Product Name" onChange={handleChange} name="ProductName" value={val.ProductName} />
                 </Col>
               </Row>
 
@@ -124,7 +114,7 @@ const Inventory = ({ history }) => {
                   Cost Price
                 </Col>
                 <Col xs="6">
-                  <input type="text" placeholder={val.CostPrice} id="cp" name="CostPrice" onChange={handleChange} />
+                  <input type="text" placeholder="Cost Price" onChange={handleChange} name="CostPrice" value={val.CostPrice} />
                 </Col>
               </Row>
 
@@ -133,7 +123,7 @@ const Inventory = ({ history }) => {
                   Selling Price
                 </Col>
                 <Col xs="6">
-                  <input type="text" placeholder={val.SellingPrice} id="sp" name="SellingPrice" onChange={handleChange} />
+                  <input type="text" placeholder="Selling Price" onChange={handleChange} name="SellingPrice" value={val.SellingPrice} />
                 </Col>
               </Row>
 
@@ -142,7 +132,7 @@ const Inventory = ({ history }) => {
                   Quantity
                 </Col>
                 <Col xs="6">
-                  <input type="text" placeholder={val.Quantity} id="quantity" name="Quantity" onChange={handleChange} />
+                  <input type="text" placeholder="Quantity" onChange={handleChange} name="Quantity" value={val.Quantity} />
                 </Col>
               </Row>
             </div>
@@ -150,13 +140,14 @@ const Inventory = ({ history }) => {
 
 
           <ModalFooter>
-            <Button color="primary" onClick={submitProduct}>Confirm</Button>
+            <Button color="primary" onClick={Submit}>Confirm</Button>
             <Button color="danger" onClick={closeModal}>Cancel</Button>
           </ModalFooter>
         </Form>
 
       </Modal>
-      <NoticeModal message={noticeMessage} isOpen={confirmModal} toggleConfirm={setConfirmModal} />
+      <ConfirmModal confirmModal={confirmModal} setConfirmVal={setConfirmValue} setConfirmModal={setConfirmModal} action="create" />
+      {/* <NoticeModal message={noticeMessage} isOpen={confirmModal} toggleConfirm={setConfirmModal} /> */}
     </div>
   );
 };
