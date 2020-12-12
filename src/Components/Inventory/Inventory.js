@@ -55,7 +55,6 @@ const Inventory = ({ history }) => {
       closeModal();
       getData();
     }
-    //console.log('Inventory');
   }, [confirmValue]);
 
   const openModal = () => {
@@ -198,7 +197,6 @@ const Inventory = ({ history }) => {
         setConfirmModal={setConfirmModal}
         action="create"
       />
-      {/* <NoticeModal message={noticeMessage} isOpen={confirmModal} toggleConfirm={setConfirmModal} /> */}
     </div>
   );
 };
