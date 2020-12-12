@@ -1,12 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import {
-  Card, Col, Row, Modal, ModalBody, ModalHeader, ModalFooter, Button, Form,
-} from 'reactstrap';
-import '../../styles/sales.css';
-import DataComponent from './DataComponent';
-import { StyleContext } from '../../contexts/StyleContext';
-import useEditInventory from '../../Forms/InventoryForm';
-import ConfirmModal from '../ConfirmModal';
+  Card,
+  Col,
+  Row,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Button,
+  Form,
+  Data,
+} from "reactstrap";
+import "../../styles/sales.css";
+import DataComponent from "./DataComponent";
+import { StyleContext } from "../../contexts/StyleContext";
+import { DataContext } from "../../contexts/DataContext";
+import useEditInventory from "../../Forms/InventoryForm";
+import ConfirmModal from "../ConfirmModal";
 
 /**
  * TO DO
@@ -17,28 +27,37 @@ import ConfirmModal from '../ConfirmModal';
  */
 
 const INITIAL_STATE = {
-  ProductID: '',
-  ProductName: '',
-  CostPrice: '',
-  SellingPrice: '',
-  Quantity: '',
+  ProductID: "",
+  ProductName: "",
+  CostPrice: "",
+  SellingPrice: "",
+  Quantity: "",
 };
-
 
 const Inventory = ({ history }) => {
   const { toggleBlur } = useContext(StyleContext);
-  const { handleChange, handleSubmitAddItem, val } = useEditInventory(INITIAL_STATE);
+  const { getData } = useContext(DataContext);
+
+  const {
+    handleChange,
+    handleSubmitAddItem,
+    handleDeleteItem,
+    val,
+  } = useEditInventory(INITIAL_STATE);
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmValue, setConfirmValue] = useState(false);
 
   useEffect(() => {
-    if (confirmValue === 'create') {
+    if (confirmValue === "create") {
       handleSubmitAddItem();
-      setConfirmValue('');
+      setConfirmValue("");
+      closeModal();
+      getData();
     }
     //console.log('Inventory');
   }, [confirmValue]);
+
   const openModal = () => {
     toggleBlur();
     OpenModal(true);
@@ -54,13 +73,17 @@ const Inventory = ({ history }) => {
     setConfirmModal(true);
   };
 
-
   return (
     <div className="txtImport">
       <Card>
         <div className="topRow">
           <h1>Inventory</h1>
-          <Button color="primary" onClick={() => { history.push('/Home'); }}>
+          <Button
+            color="primary"
+            onClick={() => {
+              history.push("/Home");
+            }}
+          >
             back
           </Button>
         </div>
@@ -78,7 +101,7 @@ const Inventory = ({ history }) => {
         </Row>
         {/* DataComponent --- mongodb data */}
         <Row className="dataComponent">
-          <DataComponent />
+          <DataComponent handleDeleteItem={handleDeleteItem} />
         </Row>
       </Card>
 
@@ -93,60 +116,88 @@ const Inventory = ({ history }) => {
           <ModalBody className="centerRow">
             <div>
               <Row className="center-vertical">
-                <Col xs="4">
-                  Product Id:
-                </Col>
+                <Col xs="4">Product Id:</Col>
                 <Col xs="6">
-                  <input type="text" placeholder="Prodcut ID" onChange={handleChange} name="ProductID" value={val.ProductID} />
+                  <input
+                    type="text"
+                    placeholder="Prodcut ID"
+                    onChange={handleChange}
+                    name="ProductID"
+                    value={val.ProductID}
+                  />
                 </Col>
               </Row>
               <Row className="center-vertical">
-                <Col xs="4">
-                  Item Name
-                </Col>
+                <Col xs="4">Item Name</Col>
                 <Col xs="6">
-                  <input type="text" placeholder="Product Name" onChange={handleChange} name="ProductName" value={val.ProductName} />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">
-                  Cost Price
-                </Col>
-                <Col xs="6">
-                  <input type="text" placeholder="Cost Price" onChange={handleChange} name="CostPrice" value={val.CostPrice} />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">
-                  Selling Price
-                </Col>
-                <Col xs="6">
-                  <input type="text" placeholder="Selling Price" onChange={handleChange} name="SellingPrice" value={val.SellingPrice} />
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    onChange={handleChange}
+                    name="ProductName"
+                    value={val.ProductName}
+                  />
                 </Col>
               </Row>
 
               <Row className="center-vertical">
-                <Col xs="4">
-                  Quantity
-                </Col>
+                <Col xs="4">Cost Price</Col>
                 <Col xs="6">
-                  <input type="text" placeholder="Quantity" onChange={handleChange} name="Quantity" value={val.Quantity} />
+                  <input
+                    type="text"
+                    placeholder="Cost Price"
+                    onChange={handleChange}
+                    name="CostPrice"
+                    value={val.CostPrice}
+                  />
+                </Col>
+              </Row>
+
+              <Row className="center-vertical">
+                <Col xs="4">Selling Price</Col>
+                <Col xs="6">
+                  <input
+                    type="text"
+                    placeholder="Selling Price"
+                    onChange={handleChange}
+                    name="SellingPrice"
+                    value={val.SellingPrice}
+                  />
+                </Col>
+              </Row>
+
+              <Row className="center-vertical">
+                <Col xs="4">Quantity</Col>
+                <Col xs="6">
+                  <input
+                    type="text"
+                    placeholder="Quantity"
+                    onChange={handleChange}
+                    name="Quantity"
+                    value={val.Quantity}
+                  />
                 </Col>
               </Row>
             </div>
           </ModalBody>
 
-
           <ModalFooter>
-            <Button color="primary" onClick={Submit}>Confirm</Button>
-            <Button color="danger" onClick={closeModal}>Cancel</Button>
+            <Button color="primary" onClick={Submit}>
+              Confirm
+            </Button>
+            <Button color="danger" onClick={closeModal}>
+              Cancel
+            </Button>
           </ModalFooter>
         </Form>
-
       </Modal>
-      <ConfirmModal confirmModal={confirmModal} setConfirmVal={setConfirmValue} setConfirmModal={setConfirmModal} action="create" />
+
+      <ConfirmModal
+        confirmModal={confirmModal}
+        setConfirmVal={setConfirmValue}
+        setConfirmModal={setConfirmModal}
+        action="create"
+      />
       {/* <NoticeModal message={noticeMessage} isOpen={confirmModal} toggleConfirm={setConfirmModal} /> */}
     </div>
   );
