@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal, ModalHeader, ModalFooter, Button } from "reactstrap";
 
 const ConfirmModal = ({
@@ -7,7 +7,7 @@ const ConfirmModal = ({
   setConfirmModal,
   action,
 }) => {
-  console.log("Confirm Modal");
+  useEffect(() => {});
 
   const closeConfirmModal = (val) => {
     setConfirmModal(false);

@@ -12,11 +12,14 @@ import {
   Data,
 } from "reactstrap";
 import "../../styles/sales.css";
+import { useDispatch, useSelector } from "react-redux";
 import DataComponent from "./DataComponent";
 import { StyleContext } from "../../contexts/StyleContext";
 import { DataContext } from "../../contexts/DataContext";
 import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";
+import { toggleBlur } from "../../redux/styleReducer";
+import { addItems } from "../../redux/DataReducer";
 
 /**
  * TO DO
@@ -35,8 +38,7 @@ const INITIAL_STATE = {
 };
 
 const Inventory = ({ history }) => {
-  const { toggleBlur } = useContext(StyleContext);
-  const { getData } = useContext(DataContext);
+  const dispatch = useDispatch();
 
   const {
     handleChange,
@@ -50,20 +52,20 @@ const Inventory = ({ history }) => {
 
   useEffect(() => {
     if (confirmValue === "create") {
-      handleSubmitAddItem();
+      console.log(typeof val);
+      dispatch(addItems(val));
       setConfirmValue("");
       closeModal();
-      getData();
     }
   }, [confirmValue]);
 
   const openModal = () => {
-    toggleBlur();
+    dispatch(toggleBlur());
     OpenModal(true);
   };
 
   const closeModal = () => {
-    toggleBlur();
+    dispatch(toggleBlur());
     OpenModal(false);
   };
 
@@ -100,7 +102,7 @@ const Inventory = ({ history }) => {
         </Row>
         {/* DataComponent --- mongodb data */}
         <Row className="dataComponent">
-          <DataComponent handleDeleteItem={handleDeleteItem} />
+          <DataComponent />
         </Row>
       </Card>
 

@@ -1,27 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-  Modal, ModalHeader, ModalBody, ModalFooter, Form, Row, Col, Button,
-} from 'reactstrap';
-import useEditInventory from '../../Forms/InventoryForm';
-import ConfirmModal from '../ConfirmModal';
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
+import { useDispatch } from "react-redux";
+import useEditInventory from "../../Forms/InventoryForm";
+import ConfirmModal from "../ConfirmModal";
+import { toggleBlur } from "../../redux/styleReducer";
+import { editItems, getItems } from "../../redux/DataReducer";
 
-const OpenItem = ({
-  OpenModal, modal, toggleBlur, initialItemObj,
-}) => {
+const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
   const [inventoryItem] = useState(initialItemObj);
   const { handleChange, handleSubmit, val } = useEditInventory(initialItemObj);
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmValue, setConfirmValue] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (confirmValue === 'edit') {
-      handleSubmit();
-      setConfirmValue('');
+    if (confirmValue === "edit") {
+      // handleSubmit();
+      dispatch(editItems(val));
+      // dispatch(getItems());
+      setConfirmValue("");
     }
   }, [confirmValue]);
 
   const closeModal = () => {
-    toggleBlur();
+    dispatch(toggleBlur());
     OpenModal(false);
   };
 
@@ -29,7 +40,6 @@ const OpenItem = ({
     setConfirmModal(true);
     closeModal();
   };
-
 
   return (
     <div>
@@ -39,46 +49,65 @@ const OpenItem = ({
           <ModalBody className="centerRow">
             <div>
               <Row className="center-vertical">
-                <Col xs="4">
-                  Product Id:
-                </Col>
+                <Col xs="4">Product Id:</Col>
                 <Col xs="6">
-                  <input type="text" disabled placeholder={inventoryItem.ProductID} value={val.ProductID} />
+                  <input
+                    type="text"
+                    disabled
+                    placeholder={inventoryItem.ProductID}
+                    value={val.ProductID}
+                  />
                 </Col>
               </Row>
               <Row className="center-vertical">
-                <Col xs="4">
-                  Item Name
-                </Col>
+                <Col xs="4">Item Name</Col>
                 <Col xs="6">
-                  <input type="text" name="ProductName" placeholder={inventoryItem.ProductName} onChange={handleChange} value={val.ProductName} />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">
-                  Cost Price
-                </Col>
-                <Col xs="6">
-                  <input type="text" name="CostPrice" placeholder={inventoryItem.CostPrice} onChange={handleChange} value={val.CostPrice} />
+                  <input
+                    type="text"
+                    name="ProductName"
+                    placeholder={inventoryItem.ProductName}
+                    onChange={handleChange}
+                    value={val.ProductName}
+                  />
                 </Col>
               </Row>
 
               <Row className="center-vertical">
-                <Col xs="4">
-                  Selling Price
-                </Col>
+                <Col xs="4">Cost Price</Col>
                 <Col xs="6">
-                  <input type="text" name="SellingPrice" placeholder={inventoryItem.SellingPrice} onChange={handleChange} value={val.SellingPrice} />
+                  <input
+                    type="text"
+                    name="CostPrice"
+                    placeholder={inventoryItem.CostPrice}
+                    onChange={handleChange}
+                    value={val.CostPrice}
+                  />
                 </Col>
               </Row>
 
               <Row className="center-vertical">
-                <Col xs="4">
-                  Quantity
-                </Col>
+                <Col xs="4">Selling Price</Col>
                 <Col xs="6">
-                  <input type="text" name="Quantity" placeholder={inventoryItem.Quantity} onChange={handleChange} value={val.Quantity} />
+                  <input
+                    type="text"
+                    name="SellingPrice"
+                    placeholder={inventoryItem.SellingPrice}
+                    onChange={handleChange}
+                    value={val.SellingPrice}
+                  />
+                </Col>
+              </Row>
+
+              <Row className="center-vertical">
+                <Col xs="4">Quantity</Col>
+                <Col xs="6">
+                  <input
+                    type="text"
+                    name="Quantity"
+                    placeholder={inventoryItem.Quantity}
+                    onChange={handleChange}
+                    value={val.Quantity}
+                  />
                 </Col>
               </Row>
             </div>
@@ -86,11 +115,21 @@ const OpenItem = ({
         </Form>
 
         <ModalFooter>
-          <Button color="primary" onClick={submit}>Confirm</Button>
-          <Button color="danger" onClick={closeModal}>Cancel</Button>
+          <Button color="primary" onClick={submit}>
+            Confirm
+          </Button>
+          <Button color="danger" onClick={closeModal}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
-      <ConfirmModal confirmModal={confirmModal} setConfirmVal={setConfirmValue} setConfirmModal={setConfirmModal} action="edit" />
+
+      <ConfirmModal
+        confirmModal={confirmModal}
+        setConfirmVal={setConfirmValue}
+        setConfirmModal={setConfirmModal}
+        action="edit"
+      />
     </div>
   );
 };

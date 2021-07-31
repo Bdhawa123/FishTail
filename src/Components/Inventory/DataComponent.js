@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Table, Button } from "reactstrap";
-import { DataContext } from "../../contexts/DataContext";
-import { StyleContext } from "../../contexts/StyleContext";
+import { getItems, deleteItem } from "../../redux/DataReducer";
+import { toggleBlur } from "../../redux/styleReducer";
+
 import ConfirmModal from "../ConfirmModal";
 import OpenItem from "./OpenItem";
 
@@ -13,38 +15,25 @@ let INITIAL_STATE = {
   Quantity: "",
 };
 
-const DataComponent = ({ handleDeleteItem }) => {
+const DataComponent = () => {
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmValue, setConfirmValue] = useState(false);
   const [editID, setEditID] = useState(null);
-  const { items } = useContext(DataContext);
-  const { toggleBlur } = useContext(StyleContext);
+
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.dataReducer.items);
+  const launchgetReq = useSelector(
+    (state) => state.dataReducer.retriggerUpdate
+  );
 
   useEffect(() => {
+    dispatch(getItems());
     if (confirmValue === "delete") {
-      handleDeleteItem(editID);
-      // fetch(`http://localhost:3030/api/Inventory/${editID}`, {
-      //   method: "DELETE",
-      //   mode: "cors",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // })
-      //   .then((response) => {
-      //     console.log(response);
-      //     if (response.ok) {
-      //       alert("Delete Successful");
-      //     } else {
-      //       alert("Delete unsuccessful");
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     alert("Unsuccesful");
-      //   });
+      dispatch(deleteItem(editID));
       setConfirmValue("");
     }
-  }, [confirmValue]);
+  }, [confirmValue, launchgetReq]);
 
   const setItem = (Obj) => {
     let JsonObj = {
@@ -58,7 +47,7 @@ const DataComponent = ({ handleDeleteItem }) => {
   };
 
   const openModal = (element) => {
-    toggleBlur();
+    dispatch(toggleBlur());
     setItem(element);
     OpenModal(true);
     console.log(element);
@@ -127,7 +116,6 @@ const DataComponent = ({ handleDeleteItem }) => {
       <OpenItem
         OpenModal={OpenModal}
         modal={modal}
-        toggleBlur={toggleBlur}
         initialItemObj={INITIAL_STATE}
       />
     </div>

@@ -1,18 +1,21 @@
-import React, { useContext } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
-import Home from './Home';
-import Sales from './Sales';
-import SManagement from './SManagement';
-import SReport from './SReport';
-import Inventory from './Inventory/Inventory';
-import { StyleContext } from '../contexts/StyleContext';
-
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import Header from "./Header";
+import Footer from "./Footer";
+import Home from "./Home";
+import Sales from "./Sales";
+import SManagement from "./SManagement";
+import SReport from "./SReport";
+import Inventory from "./Inventory/Inventory";
+import { StyleContext } from "../contexts/StyleContext";
 
 const Index = () => {
-  const { blur } = useContext(StyleContext);
+  // const { blur } = useContext(StyleContext);
 
+  const blur = useSelector((state) => state.styleReducer.blur);
+
+  // console.log(some);
   return (
     <div className="container" style={blur.blurEffect}>
       <Header />
