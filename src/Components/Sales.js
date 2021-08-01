@@ -1,30 +1,31 @@
-import React, { Component, useContext, useState } from 'react';
+import React, { Component, useContext, useState } from "react";
 import {
-  Card, Row, Modal, ModalBody, ModalHeader, ModalFooter, Button,
-} from 'reactstrap';
-import '../styles/sales.css';
-import { StyleContext } from '../contexts/StyleContext';
-import { DataContext } from '../contexts/DataContext';
+  Card,
+  Row,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Button,
+} from "reactstrap";
+import { useDispatch } from "react-redux";
+import { toggleBlur } from "../redux/styleReducer";
 
-// const {blur,toggleBlur} = useContext(StyleContext);
+import "../styles/sales.css";
 
 const SalesComponent = (props) => {
-  const { blur, toggleBlur } = useContext(StyleContext);
-  const { items } = useContext(DataContext);
-  console.log(blur.blurState);
-
+  const dispatch = useDispatch();
 
   const [modal, OpenModal] = useState(false);
   console.log(`modal${modal}`);
 
-
   const openModal = () => {
-    toggleBlur();
+    dispatch(toggleBlur());
     OpenModal(true);
   };
 
   const closeModal = () => {
-    toggleBlur();
+    dispatch(toggleBlur());
     OpenModal(false);
   };
 
@@ -33,7 +34,13 @@ const SalesComponent = (props) => {
       <Card>
         <div className="topRow">
           <h1>Sales</h1>
-          <button className="btn btn-primary" type="button" onClick={() => { props.history.push('/Home'); }}>
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => {
+              props.history.push("/Home");
+            }}
+          >
             back
           </button>
         </div>
@@ -41,7 +48,13 @@ const SalesComponent = (props) => {
 
       <Card className="container card2">
         <Row>
-          <button className="btn btn-primary" type="button" onClick={() => { openModal(); }}>
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => {
+              openModal();
+            }}
+          >
             New
           </button>
         </Row>
@@ -57,16 +70,35 @@ const SalesComponent = (props) => {
       <Modal isOpen={modal} className="modalPart modal-lg">
         {/* <h3>Add </h3>
                 <button className="btn btn-danger modalClose" onClick = {()=>closeModal()}> <span aria-hidden="true">&times;</span></button> */}
-        <ModalHeader toggle={() => { closeModal(); }}>Sales Entry</ModalHeader>
+        <ModalHeader
+          toggle={() => {
+            closeModal();
+          }}
+        >
+          Sales Entry
+        </ModalHeader>
         <ModalBody className="centerRow ">
           <input type="text" placeholder="enter Id" className="centerRow" />
         </ModalBody>
 
         <ModalFooter>
-          <Button color="primary" onClick={() => { closeModal(); }}>Confirm</Button>
-          <Button color="danger" onClick={() => { closeModal(); }}>Cancel</Button>
+          <Button
+            color="primary"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            Confirm
+          </Button>
+          <Button
+            color="danger"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            Cancel
+          </Button>
         </ModalFooter>
-
       </Modal>
     </div>
   );

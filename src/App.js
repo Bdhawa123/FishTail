@@ -8,11 +8,7 @@ import store from "./redux/store";
 
 const App = () => (
   <Provider store={store}>
-    <StyleContextProvider>
-      <DataContextProvider>
-        <Index />
-      </DataContextProvider>
-    </StyleContextProvider>
+    <Index />
   </Provider>
 );
 

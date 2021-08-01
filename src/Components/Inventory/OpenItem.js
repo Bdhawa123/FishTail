@@ -9,27 +9,18 @@ import {
   Col,
   Button,
 } from "reactstrap";
+
 import { useDispatch } from "react-redux";
 import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";
 import { toggleBlur } from "../../redux/styleReducer";
-import { editItems, getItems } from "../../redux/DataReducer";
 
 const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
   const [inventoryItem] = useState(initialItemObj);
   const { handleChange, handleSubmit, val } = useEditInventory(initialItemObj);
-  const [confirmModal, setConfirmModal] = useState(false);
-  const [confirmValue, setConfirmValue] = useState(false);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (confirmValue === "edit") {
-      // handleSubmit();
-      dispatch(editItems(val));
-      // dispatch(getItems());
-      setConfirmValue("");
-    }
-  }, [confirmValue]);
+  const [confirmModal, setConfirmModal] = useState(false);
+  const dispatch = useDispatch();
 
   const closeModal = () => {
     dispatch(toggleBlur());
@@ -126,9 +117,9 @@ const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
 
       <ConfirmModal
         confirmModal={confirmModal}
-        setConfirmVal={setConfirmValue}
         setConfirmModal={setConfirmModal}
         action="edit"
+        item={val}
       />
     </div>
   );

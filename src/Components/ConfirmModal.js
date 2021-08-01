@@ -1,17 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalHeader, ModalFooter, Button } from "reactstrap";
+import { useDispatch } from "react-redux";
+import { editItems, addItems, deleteItem } from "../redux/DataReducer";
 
-const ConfirmModal = ({
-  confirmModal,
-  setConfirmVal,
-  setConfirmModal,
-  action,
-}) => {
-  useEffect(() => {});
+const ConfirmModal = ({ confirmModal, setConfirmModal, action, item }) => {
+  const [sendReq, setSendReq] = useState(false);
+  const dispatch = useDispatch();
 
-  const closeConfirmModal = (val) => {
+  useEffect(() => {
+    if (sendReq) {
+      console.log("Inside Switch Request");
+      switch (action) {
+        case "create":
+          console.log(item);
+          dispatch(addItems(item));
+          break;
+
+        case "edit":
+          dispatch(editItems(item));
+          break;
+
+        case "delete":
+          dispatch(deleteItem(item.ProductID));
+          console.log(item.ProductID);
+          break;
+
+        default:
+          console.log("something wrong");
+          break;
+      }
+      setSendReq(false);
+    }
+  }, [sendReq]);
+
+  const closeConfirmModal = (bool) => {
+    setSendReq(bool);
     setConfirmModal(false);
-    setConfirmVal(val);
   };
 
   return (
@@ -28,7 +52,7 @@ const ConfirmModal = ({
         <Button
           color="primary"
           onClick={() => {
-            closeConfirmModal(action);
+            closeConfirmModal(true);
           }}
         >
           Confirm

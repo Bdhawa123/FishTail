@@ -14,12 +14,9 @@ import {
 import "../../styles/sales.css";
 import { useDispatch, useSelector } from "react-redux";
 import DataComponent from "./DataComponent";
-import { StyleContext } from "../../contexts/StyleContext";
-import { DataContext } from "../../contexts/DataContext";
 import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";
 import { toggleBlur } from "../../redux/styleReducer";
-import { addItems } from "../../redux/DataReducer";
 
 /**
  * TO DO
@@ -40,24 +37,12 @@ const INITIAL_STATE = {
 const Inventory = ({ history }) => {
   const dispatch = useDispatch();
 
-  const {
-    handleChange,
-    handleSubmitAddItem,
-    handleDeleteItem,
-    val,
-  } = useEditInventory(INITIAL_STATE);
+  const { handleChange, val } = useEditInventory(INITIAL_STATE);
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmValue, setConfirmValue] = useState(false);
 
-  useEffect(() => {
-    if (confirmValue === "create") {
-      console.log(typeof val);
-      dispatch(addItems(val));
-      setConfirmValue("");
-      closeModal();
-    }
-  }, [confirmValue]);
+  useEffect(() => {}, [confirmValue]);
 
   const openModal = () => {
     dispatch(toggleBlur());
@@ -71,6 +56,7 @@ const Inventory = ({ history }) => {
 
   const Submit = (event) => {
     event.preventDefault();
+    closeModal(false);
     setConfirmModal(true);
   };
 
@@ -195,9 +181,9 @@ const Inventory = ({ history }) => {
 
       <ConfirmModal
         confirmModal={confirmModal}
-        setConfirmVal={setConfirmValue}
         setConfirmModal={setConfirmModal}
         action="create"
+        item={val}
       />
     </div>
   );

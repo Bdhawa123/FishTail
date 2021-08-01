@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button } from "reactstrap";
-import { getItems, deleteItem } from "../../redux/DataReducer";
+import { getItems } from "../../redux/DataReducer";
 import { toggleBlur } from "../../redux/styleReducer";
 
 import ConfirmModal from "../ConfirmModal";
@@ -18,8 +18,6 @@ let INITIAL_STATE = {
 const DataComponent = () => {
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const [confirmValue, setConfirmValue] = useState(false);
-  const [editID, setEditID] = useState(null);
 
   const dispatch = useDispatch();
   const items = useSelector((state) => state.dataReducer.items);
@@ -29,11 +27,7 @@ const DataComponent = () => {
 
   useEffect(() => {
     dispatch(getItems());
-    if (confirmValue === "delete") {
-      dispatch(deleteItem(editID));
-      setConfirmValue("");
-    }
-  }, [confirmValue, launchgetReq]);
+  }, [launchgetReq]);
 
   const setItem = (Obj) => {
     let JsonObj = {
@@ -50,16 +44,11 @@ const DataComponent = () => {
     dispatch(toggleBlur());
     setItem(element);
     OpenModal(true);
-    console.log(element);
   };
 
-  const openConfirmModal = (id) => {
-    setEditID(id);
+  const openConfirmModal = (element) => {
+    setItem(element);
     setConfirmModal(true);
-    console.log("Open Confirm Modal is loaded");
-    /**
-     * Confirm Modal --> ???
-     */
   };
 
   return (
@@ -95,7 +84,7 @@ const DataComponent = () => {
                     <Button
                       color="danger"
                       onClick={() => {
-                        openConfirmModal(element.ProductID);
+                        openConfirmModal(element);
                       }}
                     >
                       Del
@@ -109,9 +98,9 @@ const DataComponent = () => {
 
       <ConfirmModal
         confirmModal={confirmModal}
-        setConfirmVal={setConfirmValue}
-        setConfirmModal={setConfirmModal}
+        setConfirmModal={setConfirmModal} //boolean to toggleConfirm Modal
         action="delete"
+        item={INITIAL_STATE}
       />
       <OpenItem
         OpenModal={OpenModal}
