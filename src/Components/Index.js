@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Header from "./Header";
 import Footer from "./Footer";
 import Home from "./Home";
-import Sales from "./Sales";
+import Sales from "./Sales/Sales";
 import SManagement from "./SManagement";
 import SReport from "./SReport";
 import Inventory from "./Inventory/Inventory";

@@ -5,7 +5,7 @@ import { getItems } from "../../redux/DataReducer";
 import { toggleBlur } from "../../redux/styleReducer";
 
 import ConfirmModal from "../ConfirmModal";
-import OpenItem from "./OpenItem";
+import EntryModal from "./EntryModal";
 
 let INITIAL_STATE = {
   ProductID: "",
@@ -102,10 +102,12 @@ const DataComponent = () => {
         action="delete"
         item={INITIAL_STATE}
       />
-      <OpenItem
+      <EntryModal
         OpenModal={OpenModal}
         modal={modal}
         initialItemObj={INITIAL_STATE}
+        modalTitle="Edit Product"
+        action="edit"
       />
     </div>
   );

@@ -15,7 +15,13 @@ import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";
 import { toggleBlur } from "../../redux/styleReducer";
 
-const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
+const EntryModal = ({
+  OpenModal,
+  modal,
+  initialItemObj,
+  modalTitle,
+  action,
+}) => {
   const [inventoryItem] = useState(initialItemObj);
   const { handleChange, handleSubmit, val } = useEditInventory(initialItemObj);
 
@@ -35,7 +41,7 @@ const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
   return (
     <div>
       <Modal isOpen={modal}>
-        <ModalHeader toggle={closeModal}>Edit Item</ModalHeader>
+        <ModalHeader toggle={closeModal}>{modalTitle}</ModalHeader>
         <Form onSubmit={handleSubmit}>
           <ModalBody className="centerRow">
             <div>
@@ -44,8 +50,10 @@ const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
                 <Col xs="6">
                   <input
                     type="text"
-                    disabled
+                    name="ProductID"
+                    disabled={modalTitle === "Edit Product"}
                     placeholder={inventoryItem.ProductID}
+                    onChange={handleChange}
                     value={val.ProductID}
                   />
                 </Col>
@@ -118,11 +126,11 @@ const OpenItem = ({ OpenModal, modal, initialItemObj }) => {
       <ConfirmModal
         confirmModal={confirmModal}
         setConfirmModal={setConfirmModal}
-        action="edit"
+        action={action}
         item={val}
       />
     </div>
   );
 };
 
-export default OpenItem;
+export default EntryModal;

@@ -9,14 +9,15 @@ import {
   Button,
 } from "reactstrap";
 import { useDispatch } from "react-redux";
-import { toggleBlur } from "../redux/styleReducer";
+import { toggleBlur } from "../../redux/styleReducer";
+import TypeAheadSales from "./typeAheadSales";
 
-import "../styles/sales.css";
+import "../../styles/sales.css";
 
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
-
   const [modal, OpenModal] = useState(false);
+  const [saleList, setSaleList] = useState([]);
   console.log(`modal${modal}`);
 
   const openModal = () => {
@@ -60,7 +61,7 @@ const SalesComponent = (props) => {
         </Row>
 
         <Row className="centerRow">
-          <input type="text" placeholder="Search" />
+          <TypeAheadSales title="search" />
         </Row>
         <Row className="dataComponent">
           {/* <DataComponent data={null} /> */}
@@ -78,7 +79,8 @@ const SalesComponent = (props) => {
           Sales Entry
         </ModalHeader>
         <ModalBody className="centerRow ">
-          <input type="text" placeholder="enter Id" className="centerRow" />
+          {/* <input type="text" placeholder="enter Id" className="centerRow" /> */}
+          <TypeAheadSales title="enter Id" />
         </ModalBody>
 
         <ModalFooter>

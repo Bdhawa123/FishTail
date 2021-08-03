@@ -17,6 +17,7 @@ import DataComponent from "./DataComponent";
 import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";
 import { toggleBlur } from "../../redux/styleReducer";
+import EntryModal from "./EntryModal";
 
 /**
  * TO DO
@@ -37,12 +38,12 @@ const INITIAL_STATE = {
 const Inventory = ({ history }) => {
   const dispatch = useDispatch();
 
-  const { handleChange, val } = useEditInventory(INITIAL_STATE);
+  const { val } = useEditInventory(INITIAL_STATE);
   const [modal, OpenModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const [confirmValue, setConfirmValue] = useState(false);
+  // const [confirmValue, setConfirmValue] = useState(false);
 
-  useEffect(() => {}, [confirmValue]);
+  // useEffect(() => {}, [confirmModal]);
 
   const openModal = () => {
     dispatch(toggleBlur());
@@ -96,88 +97,13 @@ const Inventory = ({ history }) => {
           As of now the modal doesn't show what is the initial state
           The initial state should either be preserved in the form or
           shown accordingly. */}
-
-      <Modal isOpen={modal} className="modalPart modal-lg">
-        <ModalHeader toggle={closeModal}>Product Entry</ModalHeader>
-        <Form>
-          <ModalBody className="centerRow">
-            <div>
-              <Row className="center-vertical">
-                <Col xs="4">Product Id:</Col>
-                <Col xs="6">
-                  <input
-                    type="text"
-                    placeholder="Prodcut ID"
-                    onChange={handleChange}
-                    name="ProductID"
-                    value={val.ProductID}
-                  />
-                </Col>
-              </Row>
-              <Row className="center-vertical">
-                <Col xs="4">Item Name</Col>
-                <Col xs="6">
-                  <input
-                    type="text"
-                    placeholder="Product Name"
-                    onChange={handleChange}
-                    name="ProductName"
-                    value={val.ProductName}
-                  />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">Cost Price</Col>
-                <Col xs="6">
-                  <input
-                    type="text"
-                    placeholder="Cost Price"
-                    onChange={handleChange}
-                    name="CostPrice"
-                    value={val.CostPrice}
-                  />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">Selling Price</Col>
-                <Col xs="6">
-                  <input
-                    type="text"
-                    placeholder="Selling Price"
-                    onChange={handleChange}
-                    name="SellingPrice"
-                    value={val.SellingPrice}
-                  />
-                </Col>
-              </Row>
-
-              <Row className="center-vertical">
-                <Col xs="4">Quantity</Col>
-                <Col xs="6">
-                  <input
-                    type="text"
-                    placeholder="Quantity"
-                    onChange={handleChange}
-                    name="Quantity"
-                    value={val.Quantity}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button color="primary" onClick={Submit}>
-              Confirm
-            </Button>
-            <Button color="danger" onClick={closeModal}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Form>
-      </Modal>
+      <EntryModal
+        OpenModal={OpenModal}
+        modal={modal}
+        initialItemObj={INITIAL_STATE}
+        modalTitle="Product Entry"
+        action="create"
+      />
 
       <ConfirmModal
         confirmModal={confirmModal}
