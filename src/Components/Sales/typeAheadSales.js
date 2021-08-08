@@ -2,13 +2,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownItem } from "reactstrap";
+import DropdownToggle from "reactstrap/lib/DropdownToggle";
 import { getItems } from "../../redux/DataReducer";
 import useEditInventory from "../../Forms/InventoryForm";
 
 const INITIALSTATE = {
   inputText: "",
 };
-const TypeAheadSales = ({ title, ProductUpdate }) => {
+const TypeAheadSales = ({ title, listUpdate }) => {
   const [toggleDropdown, setToggle] = useState(true);
   const ref = useRef(null);
 
@@ -47,17 +48,16 @@ const TypeAheadSales = ({ title, ProductUpdate }) => {
       (v) => regex.test(v.ProductID) || regex.test(v.ProductName)
     );
     /**
-     * Toggle Dropdown functionality
      * return the clicked Item to update
      */
     return val.inputText !== "" ? (
       <div ref={ref}>
         {toggleDropdown ? (
-          <Dropdown isOpen={false}>
+          <Dropdown isOpen={false} toggle={() => {}}>
             {suggestion.map((item) => (
               <DropdownItem
                 onClick={() => {
-                  ProductUpdate(item); //need to define
+                  listUpdate(item);
                 }}
               >
                 {item.ProductName}

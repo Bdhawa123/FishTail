@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalFooter,
   Button,
+  Table,
 } from "reactstrap";
 import { useDispatch } from "react-redux";
 import { toggleBlur } from "../../redux/styleReducer";
@@ -17,8 +18,7 @@ import "../../styles/sales.css";
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
   const [modal, OpenModal] = useState(false);
-  const [saleList, setSaleList] = useState([]);
-  console.log(`modal${modal}`);
+  const [productList, setSaleList] = useState([]);
 
   const openModal = () => {
     dispatch(toggleBlur());
@@ -28,6 +28,24 @@ const SalesComponent = (props) => {
   const closeModal = () => {
     dispatch(toggleBlur());
     OpenModal(false);
+  };
+
+  const listUpdate = (item) => {
+    if (productList.length) {
+      let bool = false;
+
+      for (let i = 0; i < productList.length; i = +1) {
+        if (Number(productList[i].ProductID) === Number(item.ProductID)) {
+          bool = true;
+          break;
+        }
+      }
+      if (!bool) {
+        setSaleList([...productList, item]);
+      }
+    } else {
+      setSaleList([...productList, item]);
+    }
   };
 
   return (
@@ -80,7 +98,19 @@ const SalesComponent = (props) => {
         </ModalHeader>
         <ModalBody className="centerRow ">
           {/* <input type="text" placeholder="enter Id" className="centerRow" /> */}
-          <TypeAheadSales title="enter Id" />
+          <Row>
+            <TypeAheadSales title="enter Id" listUpdate={listUpdate} />
+          </Row>
+          <Row>
+            <Table>
+              {Object.values(productList).map((product) => (
+                <tr>
+                  <td>{product.ProductName}</td>
+                  <td>{product.SellingPrice}</td>
+                </tr>
+              ))}
+            </Table>
+          </Row>
         </ModalBody>
 
         <ModalFooter>
