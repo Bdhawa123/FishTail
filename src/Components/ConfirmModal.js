@@ -9,7 +9,6 @@ const ConfirmModal = ({ confirmModal, setConfirmModal, action, item }) => {
 
   useEffect(() => {
     if (sendReq) {
-      console.log("Inside Switch Request");
       switch (action) {
         case "create":
           console.log(item);
@@ -22,11 +21,10 @@ const ConfirmModal = ({ confirmModal, setConfirmModal, action, item }) => {
 
         case "delete":
           dispatch(deleteItem(item.ProductID));
-          console.log(item.ProductID);
           break;
 
         default:
-          console.log("something wrong");
+          console.log("Confirm Modal Request unfulfilled");
           break;
       }
       setSendReq(false);

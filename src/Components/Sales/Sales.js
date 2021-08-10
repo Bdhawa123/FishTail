@@ -10,10 +10,13 @@ import {
   Table,
 } from "reactstrap";
 import { useDispatch } from "react-redux";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
 import { toggleBlur } from "../../redux/styleReducer";
 import TypeAheadSales from "./typeAheadSales";
 
 import "../../styles/sales.css";
+import Col from "reactstrap/lib/Col";
 
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
@@ -31,23 +34,10 @@ const SalesComponent = (props) => {
   };
 
   const listUpdate = (item) => {
-    if (productList.length) {
-      let bool = false;
-
-      for (let i = 0; i < productList.length; i = +1) {
-        if (Number(productList[i].ProductID) === Number(item.ProductID)) {
-          bool = true;
-          break;
-        }
-      }
-      if (!bool) {
-        setSaleList([...productList, item]);
-      }
-    } else {
-      setSaleList([...productList, item]);
+    if (productList.every((product) => product.ProductID !== item.ProductID)) {
+      setSaleList((list) => [...list, item]);
     }
   };
-
   return (
     <div className="txtImport">
       <Card>
@@ -96,21 +86,41 @@ const SalesComponent = (props) => {
         >
           Sales Entry
         </ModalHeader>
-        <ModalBody className="centerRow ">
-          {/* <input type="text" placeholder="enter Id" className="centerRow" /> */}
-          <Row>
-            <TypeAheadSales title="enter Id" listUpdate={listUpdate} />
-          </Row>
-          <Row>
-            <Table>
-              {Object.values(productList).map((product) => (
-                <tr>
-                  <td>{product.ProductName}</td>
-                  <td>{product.SellingPrice}</td>
-                </tr>
-              ))}
-            </Table>
-          </Row>
+        <ModalBody>
+          <Col>
+            <Row className="centerRow">
+              <TypeAheadSales title="enter Id" listUpdate={listUpdate} />
+            </Row>
+            <Row>
+              <Col>
+                <Table>
+                  {Object.values(productList).map((product) => {
+                    product = { ...product, Quantity: 0 };
+                    return (
+                      <tr>
+                        <td>{product.ProductID}</td>
+                        <td>{product.ProductName}</td>
+                        <td>{product.SellingPrice}</td>
+                        <td>
+                          <AddIcon
+                            onClick={() => {
+                              product.Quantity += 1;
+                              console.log(product);
+                            }}
+                          />
+                        </td>
+                        <td>{product.Quantity}</td>
+                        <td>
+                          <RemoveIcon />
+                        </td>
+                        {console.log(product)}
+                      </tr>
+                    );
+                  })}
+                </Table>
+              </Col>
+            </Row>
+          </Col>
         </ModalBody>
 
         <ModalFooter>

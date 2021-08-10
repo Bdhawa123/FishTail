@@ -1,88 +1,87 @@
 @font-face {
-    font-family: QanelasSoft;
-    src: local('./font/Qanelas/QanelasSoft.otf');
-  }
+  font-family: QanelasSoft;
+  src: local("./font/Qanelas/QanelasSoft.otf");
+}
 
 @font-face {
-font-family: QanelasSoft-bold;
-src: local('./font/Qanelas/QanelasSoft-ExtraBold.otf');
+  font-family: QanelasSoft-bold;
+  src: local("./font/Qanelas/QanelasSoft-ExtraBold.otf");
 }
 
 .txtImport {
-    font-family: QanelasSoft;
+  font-family: QanelasSoft;
 }
 
-.topRow::before{
-    margin: auto;
-    content:'D';
-    display: flex;
-    visibility: hidden;
+.topRow::before {
+  margin: auto;
+  content: "D";
+  display: flex;
+  visibility: hidden;
 }
 
-.topRow{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
+.topRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
-
 
 .topRow button {
-    margin-left: auto;
-    margin-right: 0.5rem;
+  margin-left: auto;
+  margin-right: 0.5rem;
 }
 
-.topRow h1{
-    margin-left: -25rem;
+.topRow h1 {
+  margin-left: -25rem;
 }
 
-.centerRow{
-    display: flex;
-    justify-content: center;
+.centerRow {
+  display: flex;
+  justify-content: center;
 }
 
-.row{
-    padding: 0.5em;
+.row {
+  padding: 0.5em;
 }
 /* Table Component*/
 .dataComponent {
-    padding-top:3em;
-    justify-content: center;
+  padding-top: 3em;
+  justify-content: center;
 }
 /* Modal Part*/
 .modalPart {
-    display: flex;
-
+  display: flex;
 }
 
 .modalClose {
-    width:2.5rem;
-    margin-left: auto;
+  width: 2.5rem;
+  margin-left: auto;
 }
 
 .modal-header::before {
-    margin: auto;
-    content:'D';
-    display: flex;
-    visibility: hidden;
-    margin-right:1px;
+  margin: auto;
+  content: "D";
+  display: flex;
+  visibility: hidden;
+  margin-right: 1px;
 }
 
-.modal-header{
-    justify-content: center;
+.modal-header {
+  justify-content: center;
+}
+
+.table_head {
 }
 /* Component Inventory*/
 
-.center-vertical{
-    display: flex;
-    align-items: center;
-    height: 3.5rem;
+.center-vertical {
+  display: flex;
+  align-items: center;
+  height: 3.5rem;
 }
 
-
 @media only screen and (max-width: 600px) {
-    .topRow h1{
-        margin-left: 0;
-    }
+  .topRow h1 {
+    margin-left: 0;
   }
-
+}

@@ -39,7 +39,6 @@ export const editItems = createAsyncThunk("Data/editData", async (value) => {
 });
 
 export const addItems = createAsyncThunk("Data/addItems", async (value) => {
-  console.log(value);
   fetch("http://localhost:3030/api/Inventory", {
     method: "POST",
     mode: "cors",
@@ -92,9 +91,6 @@ export const DataReducer = createSlice({
   },
   reducers: {},
   extraReducers: {
-    [getItems.pending]: (state, action) => {
-      console.log("awaiting data");
-    },
     [getItems.fulfilled]: (state, action) => {
       state.items = action.payload;
       state.retriggerUpdate = false;
@@ -103,22 +99,13 @@ export const DataReducer = createSlice({
       console.log(action.payload);
       state.errors = action.payload;
     },
-    [editItems.pending]: (state, action) => {
-      console.log("Awaiting response from edit");
-    },
     [editItems.fulfilled]: (state, action) => {
       console.log(state.items);
       state.retriggerUpdate = true;
     },
-    [addItems.pending]: (state, action) => {
-      console.log("Awaiting create response ");
-    },
     [addItems.fulfilled]: (state, action) => {
       console.log("Item added");
       state.retriggerUpdate = true;
-    },
-    [deleteItem.pending]: (state, action) => {
-      console.log("awaiting delete response");
     },
     [deleteItem.fulfilled]: (state, action) => {
       console.log("Item deleted");
