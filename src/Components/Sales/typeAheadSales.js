@@ -54,7 +54,7 @@ const TypeAheadSales = ({ title, listUpdate }) => {
       <div ref={ref}>
         {toggleDropdown ? (
           <Dropdown isOpen={false} toggle={() => {}}>
-            {suggestion.map((item) => (
+            {suggestion.map((item, key) => (
               <DropdownItem
                 onClick={() => {
                   listUpdate(item);
