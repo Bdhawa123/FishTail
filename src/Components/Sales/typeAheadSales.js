@@ -1,8 +1,7 @@
 /* eslint-disable no-else-return */
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, getState } from "react-redux";
 import { Dropdown, DropdownItem } from "reactstrap";
-import DropdownToggle from "reactstrap/lib/DropdownToggle";
 import { getItems } from "../../redux/DataReducer";
 import useEditInventory from "../../Forms/InventoryForm";
 
@@ -56,6 +55,7 @@ const TypeAheadSales = ({ title, listUpdate }) => {
           <Dropdown isOpen={false} toggle={() => {}}>
             {suggestion.map((item, key) => (
               <DropdownItem
+                key={key}
                 onClick={() => {
                   listUpdate(item);
                 }}

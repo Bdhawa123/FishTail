@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { toggleBlur } from "../../redux/styleReducer";
 import TypeAheadSales from "./typeAheadSales";
-import { addItem } from "../../redux/ItemReducer";
+import { addItem, createSales } from "../../redux/ItemReducer";
 
 import "../../styles/sales.css";
 import Col from "reactstrap/lib/Col";
@@ -21,9 +21,10 @@ import SalesItemList from "./SalesItemList";
 
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
+  const ItemList = useSelector((state) => state.itemReducer.ItemList);
 
   const [modal, OpenModal] = useState(false);
-  const changeItem = useSelector((state) => state.itemReducer.changed);
+  // const changeItem = useSelector((state) => state.itemReducer.changed);
 
   const openModal = () => {
     dispatch(toggleBlur());
@@ -37,6 +38,30 @@ const SalesComponent = (props) => {
 
   const listUpdate = (item) => {
     dispatch(addItem(item));
+  };
+
+  const sendReqCreate = () => {
+    let RefinedSelectedItems = [];
+    let ProductList = Object.values(ItemList);
+    let OBJECTMODAL = {
+      ProductID: "",
+      CostPrice: "",
+      SellingPrice: "",
+      Quantity: "",
+    };
+    ProductList.map((item) => {
+      // count >0
+      //count change to Quantity
+      if (item.count > 0) {
+        OBJECTMODAL.ProductID = item.ProductID;
+        OBJECTMODAL.CostPrice = item.CostPrice;
+        OBJECTMODAL.SellingPrice = item.SellingPrice;
+        OBJECTMODAL.Quantity = item.count;
+        RefinedSelectedItems.push(OBJECTMODAL);
+      }
+    });
+
+    dispatch(createSales(RefinedSelectedItems));
   };
 
   return (
@@ -92,7 +117,7 @@ const SalesComponent = (props) => {
             </Row>
             <Row>
               <Col>
-                <SalesItemList />
+                <SalesItemList productList={ItemList} />
               </Col>
             </Row>
           </Col>
@@ -102,7 +127,7 @@ const SalesComponent = (props) => {
           <Button
             color="primary"
             onClick={() => {
-              closeModal();
+              sendReqCreate();
             }}
           >
             Confirm

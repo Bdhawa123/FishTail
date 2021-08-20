@@ -4,7 +4,6 @@ const ProductSales = new mongoose.Schema({
   ProductID: {
     type: String,
     required: [true, "Product Id is needed"],
-    unique: true,
   },
   CostPrice: {
     type: Number,

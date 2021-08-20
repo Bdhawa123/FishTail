@@ -1,13 +1,39 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import uuid from "uuid";
+
+export const createSales = createAsyncThunk(
+  "ItemList/create",
+  async (ProductList) => {
+    const SalesItem = {
+      SaleID: uuid.v4(),
+      Sales: ProductList,
+    };
+    console.log(SalesItem);
+    fetch("http://localhost:3030/api/Sales", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(SalesItem),
+    })
+      .then((res) => res.json())
+      .then((result) => result.data)
+      .then((error) => {
+        console.log(error);
+      });
+  }
+);
 
 export const ItemReducer = createSlice({
   name: "ItemList",
   initialState: {
     ItemList: [],
     changed: true,
+    SalesList: [],
   },
   reducers: {
     addItem: (state, action) => {
+      console.log(action.payload);
       if (
         state.ItemList.every(
           (item) => item.ProductID !== action.payload.ProductID
@@ -34,7 +60,9 @@ export const ItemReducer = createSlice({
         (item) => item.ProductID === action.payload.id
       );
       if (searchItem) {
-        searchItem.count += 1;
+        if (searchItem.count !== searchItem.Quantity) {
+          searchItem.count += 1;
+        }
       }
     },
 
@@ -45,8 +73,16 @@ export const ItemReducer = createSlice({
         (item) => item.ProductID === action.payload.id
       );
       if (searchItem) {
-        searchItem.count -= 1;
+        if (searchItem.count !== 0) {
+          searchItem.count -= 1;
+        }
       }
+    },
+  },
+  extraReducers: {
+    [createSales.fulfilled]: (state, action) => {
+      state.SalesList = action.payload;
+      state.ItemList = [];
     },
   },
 });
