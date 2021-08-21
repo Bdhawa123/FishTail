@@ -12,6 +12,7 @@ export const getItems = createAsyncThunk("Data/getData", async () => {
     .catch((error) => {
       console.log(error);
     });
+
   return response;
 });
 

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import uuid from "uuid";
 
 export const createSales = createAsyncThunk(
@@ -8,7 +8,6 @@ export const createSales = createAsyncThunk(
       SaleID: uuid.v4(),
       Sales: ProductList,
     };
-    console.log(SalesItem);
     fetch("http://localhost:3030/api/Sales", {
       method: "POST",
       headers: {
@@ -24,12 +23,29 @@ export const createSales = createAsyncThunk(
   }
 );
 
+export const getSalesList = createAsyncThunk("ItemList", async () => {
+  const response = fetch("http://localhost:3030/api/Sales", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((result) => result.data)
+    .catch((error) => {
+      console.log(error);
+    });
+
+  return response;
+});
+
 export const ItemReducer = createSlice({
   name: "ItemList",
   initialState: {
     ItemList: [],
     changed: true,
     SalesList: [],
+    retriggerUpdate: false,
   },
   reducers: {
     addItem: (state, action) => {
@@ -81,8 +97,14 @@ export const ItemReducer = createSlice({
   },
   extraReducers: {
     [createSales.fulfilled]: (state, action) => {
+      // state.SalesList = action.payload;
+      // state.ItemList =
+    },
+    [getSalesList.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.SalesList = action.payload;
-      state.ItemList = [];
+      console.log(state.SalesList);
+      // state.retriggerUpdate = true;
     },
   },
 });

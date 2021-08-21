@@ -1,18 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  Card,
-  Col,
-  Row,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  Form,
-  Data,
-} from "reactstrap";
+import React, { useState } from "react";
+import { Card, Row, Button } from "reactstrap";
 import "../../styles/sales.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import DataComponent from "./DataComponent";
 import useEditInventory from "../../Forms/InventoryForm";
 import ConfirmModal from "../ConfirmModal";

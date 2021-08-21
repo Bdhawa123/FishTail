@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   Row,
@@ -7,17 +7,18 @@ import {
   ModalHeader,
   ModalFooter,
   Button,
-  Table,
+  Col,
 } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toggleBlur } from "../../redux/styleReducer";
 import TypeAheadSales from "./typeAheadSales";
-import { addItem, createSales } from "../../redux/ItemReducer";
+import { addItem, createSales, getSalesList } from "../../redux/ItemReducer";
 
 import "../../styles/sales.css";
-import Col from "reactstrap/lib/Col";
+
 import SalesItemList from "./SalesItemList";
+import SaleDataComponent from "./SaleDataComponent";
 
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const SalesComponent = (props) => {
 
   const [modal, OpenModal] = useState(false);
   // const changeItem = useSelector((state) => state.itemReducer.changed);
+
+  useState(() => {
+    dispatch(getSalesList());
+  });
 
   const openModal = () => {
     dispatch(toggleBlur());
@@ -43,6 +48,7 @@ const SalesComponent = (props) => {
   const sendReqCreate = () => {
     let RefinedSelectedItems = [];
     let ProductList = Object.values(ItemList);
+    console.log(ProductList);
     let OBJECTMODAL = {
       ProductID: "",
       CostPrice: "",
@@ -50,14 +56,12 @@ const SalesComponent = (props) => {
       Quantity: "",
     };
     ProductList.map((item) => {
-      // count >0
-      //count change to Quantity
       if (item.count > 0) {
         OBJECTMODAL.ProductID = item.ProductID;
         OBJECTMODAL.CostPrice = item.CostPrice;
         OBJECTMODAL.SellingPrice = item.SellingPrice;
         OBJECTMODAL.Quantity = item.count;
-        RefinedSelectedItems.push(OBJECTMODAL);
+        RefinedSelectedItems.push({ ...OBJECTMODAL });
       }
     });
 
@@ -98,9 +102,11 @@ const SalesComponent = (props) => {
           <TypeAheadSales title="search" />
         </Row>
         <Row className="dataComponent">
-          {/* <DataComponent data={null} /> */}
+          <SaleDataComponent />
         </Row>
       </Card>
+
+      {/* Data Modal */}
 
       <Modal isOpen={modal} className="modalPart modal-lg">
         <ModalHeader

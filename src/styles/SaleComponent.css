@@ -1,0 +1,18 @@
+.salesTable {
+  width: 55vw !important;
+}
+
+.salesTable tr {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.salesTable tr th {
+  border: none;
+}
+
+.salesCard {
+  height: 85px;
+  justify-content: center;
+}

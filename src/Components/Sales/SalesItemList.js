@@ -3,7 +3,7 @@ import { Table } from "reactstrap";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addCount, decrease, deleteItem } from "../../redux/ItemReducer";
 import "../../styles/salesItem.css";
 
