@@ -1,11 +1,16 @@
 /* eslint-disable indent */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Button, Card } from "reactstrap";
+import { Table, Modal, Button, Card } from "reactstrap";
+import ModalBody from "reactstrap/lib/ModalBody";
+import ModalHeader from "reactstrap/lib/ModalHeader";
 import { getSalesList } from "../../redux/ItemReducer";
 import "../../styles/SaleComponent.css";
+import ModalSalesOpen from "./modalSalesOpen";
 
 const SaleDataComponent = () => {
+  const [modal, setModal] = useState(false);
+  const [selectedSales, setSelectedSales] = useState(null);
   const dispatch = useDispatch();
   const SalesList = useSelector((state) => state.itemReducer.SalesList);
   const Update = useSelector((state) => state.itemReducer.retriggerUpdate);
@@ -22,6 +27,11 @@ const SaleDataComponent = () => {
     });
     return total;
   };
+  const SalesDetails = (sales) => {
+    // eslint-disable-next-line no-unused-expressions
+    setSelectedSales(sales);
+    modal === false ? setModal(true) : setModal(false);
+  };
 
   return (
     <div>
@@ -35,7 +45,12 @@ const SaleDataComponent = () => {
         {SalesList != null
           ? Object.values(SalesList).map((saleObj) =>
               saleObj.map((sale) => (
-                <Card className="salesCard">
+                <Card
+                  className="salesCard"
+                  onClick={() => {
+                    SalesDetails(sale);
+                  }}
+                >
                   <tr>
                     <div>{sale.SaleID}</div>
                     <div className="sales">
@@ -59,6 +74,11 @@ const SaleDataComponent = () => {
             )
           : null}
       </Table>
+      <ModalSalesOpen
+        modal={modal}
+        setModal={setModal}
+        selectedSales={selectedSales}
+      />
     </div>
   );
 };
