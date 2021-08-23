@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, Row, Col } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
-import SaleDataComponent from "./SaleDataComponent";
+import { useSelector } from "react-redux";
+import "../../styles/modalSalesOpen.css";
 
 const MapProductToSales = ({ Sales }) => {
-  const dispatch = useDispatch();
   const ItemList = useSelector((state) => state.dataReducer.items);
+
   useEffect(() => {
     console.log(Sales);
-    console.log(Object.values(ItemList));
-  }, []);
+  });
+
   return (
-    <div>
+    <div className="mapProductSales">
       {Object.values(ItemList).map((items) =>
         items.map((item) => (
           <div>
             {Sales.map((sale) => {
               if (sale.ProductID === item.ProductID) {
                 return (
-                  <div>
+                  <div className="saleSingleItem">
+                    <div>{item.ProductID}</div>
                     <div>{item.ProductName}</div>
                     <div>{sale.SellingPrice}</div>
+                    <div>{sale.Quantity}</div>
                   </div>
                 );
               }
@@ -39,7 +41,7 @@ const ModalSalesOpen = ({ modal, setModal, selectedSales }) => {
     }
   });
   return (
-    <Modal isOpen={modal} className="modalPart modal-lg">
+    <Modal isOpen={modal} className="modalPart modal-lg mt-4">
       <ModalHeader
         toggle={() => {
           setModal(false);
@@ -47,18 +49,16 @@ const ModalSalesOpen = ({ modal, setModal, selectedSales }) => {
       >
         Sales Item
       </ModalHeader>
-
-      <ModalBody>
-        <Col>
-          <Row className="centerRow" />
-        </Col>
-      </ModalBody>
       <ModalBody>
         {selectedSales ? (
           <div>
-            <div className="text-center">{selectedSales.SaleID}</div>
+            <div className="selectedSaleTitle">
+              <div>{selectedSales.SaleID}</div>
+              <div>
+                {new Date(selectedSales.createdAt).toLocaleDateString()}
+              </div>
+            </div>
             <MapProductToSales Sales={selectedSales.Sales} />
-            {/* <div>{selectedSales.}</div> */}
           </div>
         ) : null}
       </ModalBody>

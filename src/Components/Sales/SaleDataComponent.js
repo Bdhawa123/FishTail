@@ -1,9 +1,7 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Modal, Button, Card } from "reactstrap";
-import ModalBody from "reactstrap/lib/ModalBody";
-import ModalHeader from "reactstrap/lib/ModalHeader";
+import { Table, Card } from "reactstrap";
 import { getSalesList } from "../../redux/ItemReducer";
 import "../../styles/SaleComponent.css";
 import ModalSalesOpen from "./modalSalesOpen";
@@ -28,7 +26,6 @@ const SaleDataComponent = () => {
     return total;
   };
   const SalesDetails = (sales) => {
-    // eslint-disable-next-line no-unused-expressions
     setSelectedSales(sales);
     modal === false ? setModal(true) : setModal(false);
   };
@@ -55,7 +52,8 @@ const SaleDataComponent = () => {
                     <div>{sale.SaleID}</div>
                     <div className="sales">
                       <div>
-                        Date: {new Date(sale.createdAt).toLocaleDateString()}
+                        Date:
+                        {new Date(sale.createdAt).toLocaleDateString()}
                       </div>
                       <div>
                         TotalSale:

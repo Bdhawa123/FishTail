@@ -34,6 +34,9 @@
     "class-methods-use-this": "off",
     "prefer-const": "off",
     "react/prop-types": [0],
+    "implicit-arrow-linebreak": "off",
+    "no-unused-expressions": ["error", { "allowTernary": true }],
+    "indent": "off",
     "react/jsx-filename-extension": [
       1,
       {

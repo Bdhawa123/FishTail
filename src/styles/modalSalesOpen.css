@@ -1,0 +1,15 @@
+.saleSingleItem {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 24px;
+}
+
+.selectedSaleTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mapProductSales {
+  margin-top: 30px;
+  margin-bottom: 13px;
+}

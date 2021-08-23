@@ -9,16 +9,15 @@ import {
   Button,
   Col,
 } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useDispatch, useSelector } from "react-redux";
 import { toggleBlur } from "../../redux/styleReducer";
 import TypeAheadSales from "./typeAheadSales";
 import { addItem, createSales, getSalesList } from "../../redux/ItemReducer";
-
-import "../../styles/sales.css";
-
 import SalesItemList from "./SalesItemList";
 import SaleDataComponent from "./SaleDataComponent";
+
+import "../../styles/sales.css";
 
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
@@ -48,7 +47,6 @@ const SalesComponent = (props) => {
   const sendReqCreate = () => {
     let RefinedSelectedItems = [];
     let ProductList = Object.values(ItemList);
-    console.log(ProductList);
     let OBJECTMODAL = {
       ProductID: "",
       CostPrice: "",
