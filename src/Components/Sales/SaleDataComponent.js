@@ -20,11 +20,10 @@ const SaleDataComponent = () => {
 
   const Total = (ProductList) => {
     let total = 0;
-    ProductList.map((product) => {
-      total += product.SellingPrice;
-    });
+    ProductList.map((product) => (total += product.SellingPrice));
     return total;
   };
+
   const SalesDetails = (sales) => {
     setSelectedSales(sales);
     modal === false ? setModal(true) : setModal(false);
