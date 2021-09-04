@@ -1,21 +1,23 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Card } from "reactstrap";
+import { Table, Card, Button } from "reactstrap";
 import { getSalesList } from "../../redux/ItemReducer";
 import "../../styles/SaleComponent.css";
 import ModalSalesOpen from "./modalSalesOpen";
 
 const SaleDataComponent = () => {
+  const dispatch = useDispatch();
+  const ITEMPERPAGE = 2;
   const [modal, setModal] = useState(false);
   const [selectedSales, setSelectedSales] = useState(null);
-  const dispatch = useDispatch();
+
   const SalesList = useSelector((state) => state.itemReducer.SalesList);
   const Update = useSelector((state) => state.itemReducer.retriggerUpdate);
+  const [Paginate, setPaginate] = useState(0);
 
   useEffect(() => {
     dispatch(getSalesList());
-    console.log(SalesList);
   }, [Update]);
 
   const Total = (ProductList) => {
@@ -31,6 +33,29 @@ const SaleDataComponent = () => {
 
   return (
     <div>
+      <div className="pageNav">
+        <Button
+          className="prev"
+          outline
+          color="danger"
+          onClick={() => {
+            Paginate > 0 && setPaginate(Paginate - ITEMPERPAGE);
+          }}
+        >
+          Previous
+        </Button>
+        <Button
+          className="next"
+          outline
+          color="danger"
+          onClick={() => {
+            Paginate + ITEMPERPAGE < SalesList.length &&
+              setPaginate(Paginate + ITEMPERPAGE);
+          }}
+        >
+          Next
+        </Button>
+      </div>
       <Table className="salesTable">
         <thead>
           <tr>
@@ -39,36 +64,34 @@ const SaleDataComponent = () => {
           </tr>
         </thead>
         {SalesList != null
-          ? Object.values(SalesList).map((saleObj) =>
-              saleObj.map((sale) => (
-                <Card
-                  className="salesCard"
-                  onClick={() => {
-                    SalesDetails(sale);
-                  }}
-                >
-                  <tr>
-                    <div>{sale.SaleID}</div>
-                    <div className="sales">
-                      <div>
-                        Date:
-                        {new Date(sale.createdAt).toLocaleDateString()}
-                      </div>
-                      <div>
-                        TotalSale:
-                        {Total(sale.Sales)}
-                      </div>
-                      <div>
-                        Time:
-                        {new Date(sale.createdAt).toLocaleTimeString("en-US", {
-                          timeZoneName: "short",
-                        })}
-                      </div>
+          ? SalesList.slice(Paginate, Paginate + ITEMPERPAGE).map((sale) => (
+              <Card
+                className="salesCard"
+                onClick={() => {
+                  SalesDetails(sale);
+                }}
+              >
+                <tr>
+                  <div>{sale.SaleID}</div>
+                  <div className="sales">
+                    <div>
+                      Date:
+                      {new Date(sale.createdAt).toLocaleDateString()}
                     </div>
-                  </tr>
-                </Card>
-              ))
-            )
+                    <div>
+                      TotalSale:
+                      {Total(sale.Sales)}
+                    </div>
+                    <div>
+                      Time:
+                      {new Date(sale.createdAt).toLocaleTimeString("en-US", {
+                        timeZoneName: "short",
+                      })}
+                    </div>
+                  </div>
+                </tr>
+              </Card>
+            ))
           : null}
       </Table>
       <ModalSalesOpen

@@ -22,13 +22,24 @@ import "../../styles/sales.css";
 const SalesComponent = (props) => {
   const dispatch = useDispatch();
   const ItemList = useSelector((state) => state.itemReducer.ItemList);
+  const triggerUpdate = useSelector(
+    (state) => state.itemReducer.retriggerUpdate
+  );
 
   const [modal, OpenModal] = useState(false);
-  // const changeItem = useSelector((state) => state.itemReducer.changed);
+  // TO DO LIST
+  // Pagination
+  // React cache and memoization concept addition --Advanced
+  // Authentication system
+  // Confirm Action Modal and alert successful
+  // TypeAhead for Sales and Data Component
+  // Form Validation
+
+  //
 
   useState(() => {
     dispatch(getSalesList());
-  });
+  }, [triggerUpdate]);
 
   const openModal = () => {
     dispatch(toggleBlur());

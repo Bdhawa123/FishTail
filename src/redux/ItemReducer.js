@@ -31,7 +31,7 @@ export const getSalesList = createAsyncThunk("ItemList", async () => {
     },
   })
     .then((res) => res.json())
-    .then((result) => result.data)
+    .then((result) => result.data.SaleItems)
     .catch((error) => {
       console.log(error);
     });
@@ -97,13 +97,10 @@ export const ItemReducer = createSlice({
   },
   extraReducers: {
     [createSales.fulfilled]: (state, action) => {
-      // state.SalesList = action.payload;
-      // state.ItemList =
+      state.retriggerUpdate = !state.retriggerUpdate;
     },
     [getSalesList.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.SalesList = action.payload;
-      console.log(state.SalesList);
       // state.retriggerUpdate = true;
     },
   },

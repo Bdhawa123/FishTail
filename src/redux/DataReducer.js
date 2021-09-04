@@ -94,7 +94,7 @@ export const DataReducer = createSlice({
   extraReducers: {
     [getItems.fulfilled]: (state, action) => {
       state.items = action.payload;
-      state.retriggerUpdate = false;
+      state.retriggerUpdate = !state.retriggerUpdate;
     },
     [getItems.rejected]: (state, action) => {
       console.log(action.payload);
@@ -114,7 +114,5 @@ export const DataReducer = createSlice({
     },
   },
 });
-
-// export const { getItems } = DataReducer.actions;
 
 export default DataReducer.reducer;

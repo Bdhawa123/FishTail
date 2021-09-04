@@ -16,3 +16,8 @@
   height: 85px;
   justify-content: center;
 }
+
+.pageNav {
+  display: flex;
+  justify-content: space-between;
+}
